@@ -1,0 +1,23 @@
+{
+  "name": "EventDispatcher",
+  "main": "eventdispatcher.js",
+  "version": "1.0.0",
+  "homepage": "https://github.com/soenkekluth/EventDispatcher",
+  "authors": [
+    "Sönke Kluth <soenke.kluth@gmail.com>"
+  ],
+  "description": "EventDispatcher for JavaScript. similar to EventEmitter",
+  "keywords": [
+    "event",
+    "dispatch",
+    "emitter"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

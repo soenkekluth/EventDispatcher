@@ -1,6 +1,6 @@
 {
   "name": "EventDispatcher",
-  "main": "eventdispatcher.js",
+  "main": "src/eventdispatcher.js",
   "version": "1.0.0",
   "homepage": "https://github.com/soenkekluth/EventDispatcher",
   "authors": [

@@ -1,0 +1,25 @@
+{
+  "name": "EventDispatcher",
+  "version": "1.0.0",
+  "description": "EventDispatcher like nodes EventEmitter",
+  "main": "src/eventdispatcher.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/soenkekluth/EventDispatcher.git"
+  },
+  "keywords": [
+    "event",
+    "dispatcher",
+    "emit",
+    "observer"
+  ],
+  "author": "Sönke Kluth <soenke.kluth@gmail.com> (http://soenkekluth.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/soenkekluth/EventDispatcher/issues"
+  },
+  "homepage": "https://github.com/soenkekluth/EventDispatcher"
+}

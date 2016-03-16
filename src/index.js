@@ -1,26 +1,3 @@
-/**
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 Sönke Kluth
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- **/
-
  'use strict';
 
  function isEmpty(obj) {
@@ -32,20 +9,30 @@
    return true;
  }
 
+var _instanceMap = {};
+
  var EventDispatcher = function() {
    this._eventMap = {};
    this._destroyed = false;
  };
 
+ EventDispatcher.getInstance = function(key){
+  if(!key){
+    throw new Error('key must be');
+  }
+  return _instanceMap[key] || (_instanceMap[key] =  new EventDispatcher());
+ };
+
+
  EventDispatcher.prototype.addListener = function(event, listener) {
    var firstListener = false;
-   var listener = this.getListener(event);
-   if (listener === null) {
+   var listeners = this.getListener(event);
+   if (!listeners) {
      firstListener = true;
-     listener = this._eventMap[event] = [];
+     listeners = this._eventMap[event] = [];
    }
-   if (firstListener || listener.indexOf(listener) === -1) {
-     listener.push(listener);
+   if (firstListener || listeners.indexOf(listener) === -1) {
+     listeners.push(listener);
      return true;
    }
    return false;
@@ -61,6 +48,10 @@
  };
 
  EventDispatcher.prototype.removeListener = function(event, listener) {
+
+  if(typeof listener === 'undefined'){
+    return this.removeAllListener(event);
+  }
 
    var listeners = this.getListener(event);
    if (listeners) {
@@ -90,19 +81,20 @@
  };
 
  EventDispatcher.prototype.hasListeners = function() {
-   return this._eventMap && !isEmpty(this._eventMap);
+   return (this._eventMap !== null && this._eventMap !== undefined && !isEmpty(this._eventMap));
  };
 
  EventDispatcher.prototype.dispatch = function(eventType, eventObject) {
    var listeners = this.getListener(eventType);
 
    if (listeners) {
-     eventObject = (eventObject) ? eventObject : {};
+     eventObject = eventObject || {};
      eventObject.type = eventType;
      eventObject.target = eventObject.target || this;
+
      var i = -1;
      while (++i < listeners.length) {
-       listeners[i].call(null, eventObject);
+       listeners[i](eventObject);
      }
      return true;
    }

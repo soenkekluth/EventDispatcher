@@ -1,10 +1,13 @@
 {
   "name": "eventdispatcher",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "EventDispatcher like nodes EventEmitter",
-  "main": "src/eventdispatcher.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./test",
+    "build-debug": "browserify src/index.js -d --standalone EventDispatcher > dist/eventdispatcher.js",
+    "build-min": "browserify src/index.js --standalone EventDispatcher | uglifyjs -c > dist/eventdispatcher.min.js",
+    "dist": "npm run build-debug && npm run build-min"
   },
   "repository": {
     "type": "git",
@@ -21,5 +24,10 @@
   "bugs": {
     "url": "https://github.com/soenkekluth/EventDispatcher/issues"
   },
-  "homepage": "https://github.com/soenkekluth/EventDispatcher"
+  "homepage": "https://github.com/soenkekluth/EventDispatcher",
+  "devDependencies": {
+    "browserify": "13.0.0",
+    "concurrently": "2.0.0",
+    "uglify-js": "2.6.2"
+  }
 }

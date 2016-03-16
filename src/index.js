@@ -25,13 +25,13 @@ var _instanceMap = {};
 
 
  EventDispatcher.prototype.addListener = function(event, listener) {
-   var firstListener = false;
    var listeners = this.getListener(event);
    if (!listeners) {
-     firstListener = true;
-     listeners = this._eventMap[event] = [];
+     this._eventMap[event] = [listener];
+     return true;
    }
-   if (firstListener || listeners.indexOf(listener) === -1) {
+
+   if (listeners.indexOf(listener) === -1) {
      listeners.push(listener);
      return true;
    }
@@ -57,8 +57,8 @@ var _instanceMap = {};
    if (listeners) {
      var i = listeners.indexOf(listener);
      if (i > -1) {
-       this._eventMap[event] = listeners.splice(i, 1);
-       if (listeners.length === 0) {
+       listeners = listeners.splice(i, 1);
+       if (!listeners.length) {
          delete(this._eventMap[event]);
        }
        return true;
@@ -72,8 +72,9 @@ var _instanceMap = {};
    if (listeners) {
      this._eventMap[event].length = 0;
      delete(this._eventMap[event]);
+    return true;
    }
-   return true;
+   return false;
  };
 
  EventDispatcher.prototype.hasListener = function(event) {

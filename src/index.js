@@ -34,14 +34,10 @@ var _instanceMap = {};
    var listeners = this.getListener(event);
    if (!listeners) {
      this._eventMap[event] = [listener];
-     return true;
-   }
-
-   if (listeners.indexOf(listener) === -1) {
+   }else if (listeners.indexOf(listener) === -1) {
      listeners.push(listener);
-     return true;
    }
-   return false;
+   return this;
  };
 
  EventDispatcher.prototype.addListenerOnce = function(event, listener) {
@@ -67,10 +63,9 @@ var _instanceMap = {};
        if (!listeners.length) {
          delete(this._eventMap[event]);
        }
-       return true;
      }
    }
-   return false;
+   return this;
  };
 
  EventDispatcher.prototype.removeAllListener = function(event) {
@@ -78,9 +73,8 @@ var _instanceMap = {};
    if (listeners) {
      this._eventMap[event].length = 0;
      delete(this._eventMap[event]);
-    return true;
    }
-   return false;
+   return this;
  };
 
  EventDispatcher.prototype.hasListener = function(event) {
@@ -103,9 +97,9 @@ var _instanceMap = {};
      while (++i < listeners.length) {
        listeners[i](eventObject);
      }
-     return true;
+     // return true;
    }
-   return false;
+   return this;
  };
 
  EventDispatcher.prototype.getListener = function(event) {
@@ -121,6 +115,7 @@ var _instanceMap = {};
      this._eventMap = null;
    }
    this._destroyed = true;
+   return this;
  };
 
  module.exports = EventDispatcher;

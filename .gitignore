@@ -16,5 +16,5 @@ node_modules
 /test/bower_components
 /TODO
 .sass-cache
-.gulp-cache
+.tern-port
 

@@ -1,14 +1,20 @@
 {
   "name": "eventdispatcher",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "EventDispatcher like nodes EventEmitter",
-  "main": "src/index.js",
+  "main": "dist/eventdispatcher.js",
+  "jsnext:main": "src/eventdispatcher.js",
   "scripts": {
-    "test": "node ./test",
-    "build-debug": "browserify src/index.js -d --standalone EventDispatcher > dist/eventdispatcher.js",
-    "build-min": "browserify src/index.js --standalone EventDispatcher | uglifyjs -c > dist/eventdispatcher.min.js",
-    "dist": "npm run build-debug && npm run build-min"
-  },
+      "test": "node test",
+      "build-js": "browserify --fast -e src/eventdispatcher.js -d --standalone EventDispatcher -t babelify | derequire | exorcist dist/eventdispatcher.browser.js.map > dist/eventdispatcher.browser.js",
+      "dist-js": "BABEL_ENV=production NODE_ENV=production browserify -e src/eventdispatcher.js --standalone EventDispatcher -t babelify | derequire > dist/eventdispatcher.browser.js",
+      "dist-js-min": "uglifyjs -cmv dist/eventdispatcher.browser.js > dist/eventdispatcher.browser.min.js",
+      "dist": "npm run dist-js && npm run dist-js-min && npm run build-lib",
+      "start": "run-p watch-js server",
+      "build-lib": "BABEL_ENV=production babel src -d dist",
+      "watch-js": "watchify -d --poll=100 --fast --standalone EventDispatcher -e src/eventdispatcher.js -t babelify -o 'exorcist dist/eventdispatcher.browser.js.map > dist/eventdispatcher.browser.js' -v",
+      "server": "browser-sync start --no-ghost-mode --server --directory --files 'examples/**/**, dist/*.js' --startPath examples/index.html"
+    },
   "repository": {
     "type": "git",
     "url": "https://github.com/soenkekluth/EventDispatcher.git"
@@ -26,8 +32,24 @@
   },
   "homepage": "https://github.com/soenkekluth/EventDispatcher",
   "devDependencies": {
-    "browserify": "13.0.0",
-    "concurrently": "2.0.0",
-    "uglify-js": "2.6.2"
+    "babel-cli": "6.14.0",
+        "babel-core": "6.14.0",
+        "babel-plugin-add-module-exports": "0.2.1",
+        "babel-plugin-transform-class-constructor-call": "6.8.0",
+        "babel-plugin-transform-class-properties": "6.11.5",
+        "babel-plugin-transform-decorators-legacy": "1.3.4",
+        "babel-plugin-transform-es2015-classes": "6.14.0",
+        "babel-plugin-transform-proto-to-assign": "6.9.0",
+        "babel-plugin-transform-remove-console": "6.8.0",
+        "babel-preset-es2015": "6.14.0",
+        "babel-preset-stage-0": "6.5.0",
+        "babelify": "7.3.0",
+        "browser-sync": "2.14.3",
+        "browserify": "13.1.0",
+        "derequire": "2.0.3",
+        "exorcist": "0.4.0",
+        "npm-run-all": "3.0.0",
+        "uglifyjs": "2.4.10",
+        "watchify": "3.7.0"
   }
 }

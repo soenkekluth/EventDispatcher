@@ -13,17 +13,14 @@
 
  export default class EventDispatcher {
 
-
    constructor() {
      this._eventMap = {};
      this._destroyed = false;
 
-     //Method Map
      this.on = this.bind = this.addEventListener = this.addListener;
      this.off = this.unbind = this.removeEventListener = this.removeListener;
      this.once = this.one = this.addListenerOnce;
-     this.emmit = this.trigger = this.dispatchEvent = this.dispatch;
-
+     this.emit = this.trigger = this.dispatchEvent = this.dispatch;
    }
 
    static getInstance(key) {
@@ -31,7 +28,7 @@
        throw new Error('key must be');
      }
      return _instanceMap[key] || (_instanceMap[key] = new EventDispatcher());
-   }
+   };
 
 
    addListener(event, listener) {
@@ -45,17 +42,18 @@
    }
 
    addListenerOnce(event, listener) {
-     var s = this;
-     var f2 = () => {
-       s.removeListener(event, f2);
-       return listener.apply(this, arguments);
+     var f2 = (e) => {
+       listener(e);
+       this.off(event, f2);
+       listener = null;
+       f2 = null;
      };
-     return this.addListener(event, f2);
+     return this.on(event, f2);
    }
 
    removeListener(event, listener) {
 
-     if (typeof listener === 'undefined') {
+     if (!listener) {
        return this.removeAllListener(event);
      }
 
@@ -95,13 +93,15 @@
      if (listeners) {
        eventObject = eventObject || {};
        eventObject.type = eventType;
+       // eventObject.stopPropagation = ()=> {
+       //  eventObject._stopPropagation = true;
+       // };
        eventObject.target = eventObject.target || this;
 
        var i = -1;
        while (++i < listeners.length) {
          listeners[i](eventObject);
        }
-       // return true;
      }
      return this;
    }

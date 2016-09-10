@@ -1,6 +1,6 @@
 {
   "name": "eventdispatcher",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "EventDispatcher like nodes EventEmitter",
   "main": "dist/eventdispatcher.js",
   "jsnext:main": "src/eventdispatcher.js",

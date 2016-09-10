@@ -4,13 +4,14 @@
 var EventDispatcher = require('../dist/eventdispatcher');
 
 var handler = function(event) {
-  console.log('>> '+event.type + ' was triggered');
+  console.log(' >> ' + event.type + ' was triggered');
 };
 
 var dispatcher = new EventDispatcher();
-console.log('dispatcher.hasListeners', dispatcher.hasListeners());
 
+console.log('dispatcher.hasListeners', dispatcher.hasListeners());
 console.log('dispatcher.on(evt1).....');
+
 dispatcher.on('evt1', handler)
 console.log('dispatcher.hasListeners', dispatcher.hasListeners());
 console.log('dispatcher.hasListener(evt1)', dispatcher.hasListener('evt1'));
@@ -62,7 +63,8 @@ dispatcher.trigger('evt1')
 console.log('trigger(evt2)');
 dispatcher.trigger('evt2');
 
-console.log('destroy'); dispatcher.destroy()
+console.log('destroy');
+dispatcher.destroy()
 
 console.log('trigger(evt1)');
 dispatcher.trigger('evt1')

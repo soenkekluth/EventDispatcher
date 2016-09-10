@@ -1,1 +1,0 @@
-'use strict';var EventDispatcher=require('./eventdispatcher');module.exports=EventDispatcher;

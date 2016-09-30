@@ -7,10 +7,8 @@ Object.defineProperty(exports, "__esModule", {
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function isEmpty(obj) {
-  for (var prop in obj) {
-    if (obj.hasOwnProperty(prop)) {
-      return false;
-    }
+  if (obj) {
+    return Object.keys(obj).length === 0;
   }
   return true;
 }
@@ -26,6 +24,9 @@ var EventDispatcher = function () {
 
     this._eventMap = {};
     this._destroyed = false;
+    this._target = null;
+    this._currentTarget = null;
+
     this._target = target || this;
     this._currentTarget = currentTarget || this;
 
@@ -51,14 +52,12 @@ var EventDispatcher = function () {
     var _f = function f2(e) {
       listener(e);
       _this.off(event, _f);
-      listener = null;
       _f = null;
     };
     return this.on(event, _f);
   };
 
   EventDispatcher.prototype.removeListener = function removeListener(event, listener) {
-
     if (!listener) {
       return this.removeAllListener(event);
     }
@@ -67,7 +66,7 @@ var EventDispatcher = function () {
     if (listeners) {
       var i = listeners.indexOf(listener);
       if (i > -1) {
-        listeners = listeners.splice(i, 1);
+        listeners.splice(i, 1);
         if (!listeners.length) {
           delete this._eventMap[event];
         }
@@ -97,14 +96,14 @@ var EventDispatcher = function () {
     var listeners = this.getListener(eventType);
 
     if (listeners) {
-      eventObject = eventObject || {};
-      eventObject.type = eventType;
-      eventObject.target = eventObject.target || this._target;
-      eventObject.currentTarget = eventObject.currentTarget || this._currentTarget;
+      var evtObj = eventObject || {};
+      evtObj.type = eventType;
+      evtObj.target = evtObj.target || this._target;
+      evtObj.currentTarget = evtObj.currentTarget || this._currentTarget;
 
       var i = -1;
       while (++i < listeners.length) {
-        listeners[i](eventObject);
+        listeners[i](evtObj);
       }
     }
     return this;
@@ -117,11 +116,13 @@ var EventDispatcher = function () {
 
   EventDispatcher.prototype.destroy = function destroy() {
     if (this._eventMap) {
-      for (var i in this._eventMap) {
-        this.removeAllListener(i);
+      var keys = Object.keys(this._eventMap);
+      for (var i = 0; i < keys.length; i++) {
+        this.removeAllListener(keys[i]);
       }
-      this._eventMap = null;
     }
+
+    this._eventMap = null;
     this._destroyed = true;
     return this;
   };

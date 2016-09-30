@@ -1,17 +1,37 @@
 {
-  "presets": [
-    "es2015"
-  ],
+  "env": {
 
-  "comments": false,
+    "development": {
 
-  "plugins": [
-    "transform-remove-console",
-    [
-      "transform-es2015-classes", {
-        "loose": true
-      }
-    ],
-    "add-module-exports"
-  ]
+      "presets": [
+        "es2015",
+      ],
+
+      "plugins": [
+        "transform-class-properties",
+        "transform-class-constructor-call"
+      ]
+    },
+
+    "production": {
+
+      "presets": [
+        "es2015",
+      ],
+
+      "minified": false,
+      "comments": false,
+
+      "plugins": [
+        "transform-remove-console",
+        "transform-class-properties",
+        "transform-class-constructor-call", [
+          "transform-es2015-classes", {
+            "loose": true
+          }
+        ],
+        "add-module-exports"
+      ]
+    }
+  }
 }

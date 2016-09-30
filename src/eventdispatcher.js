@@ -1,20 +1,19 @@
-'use strict';
-
 function isEmpty(obj) {
-  for (var prop in obj) {
-    if (obj.hasOwnProperty(prop)) {
-      return false;
-    }
+  console.log('isEmpty', obj);
+  if (obj) {
+    return Object.keys(obj).length === 0;
   }
   return true;
 }
 
 export default class EventDispatcher {
 
-  constructor({target, currentTarget } = {}) {
+  _eventMap = {};
+  _destroyed = false;
+  _target = null;
+  _currentTarget = null;
 
-    this._eventMap = {};
-    this._destroyed = false;
+  constructor({ target, currentTarget } = {}) {
     this._target = target || this;
     this._currentTarget = currentTarget || this;
 
@@ -25,7 +24,7 @@ export default class EventDispatcher {
   }
 
   addListener(event, listener) {
-    var listeners = this.getListener(event);
+    const listeners = this.getListener(event);
     if (!listeners) {
       this._eventMap[event] = [listener];
     } else if (listeners.indexOf(listener) === -1) {
@@ -35,28 +34,26 @@ export default class EventDispatcher {
   }
 
   addListenerOnce(event, listener) {
-    var f2 = (e) => {
-        listener(e);
-        this.off(event, f2);
-        listener = null;
-        f2 = null;
-      };
+    let f2 = (e) => {
+      listener(e);
+      this.off(event, f2);
+      f2 = null;
+    };
     return this.on(event, f2);
   }
 
   removeListener(event, listener) {
-
     if (!listener) {
       return this.removeAllListener(event);
     }
 
-    var listeners = this.getListener(event);
+    const listeners = this.getListener(event);
     if (listeners) {
-      var i = listeners.indexOf(listener);
+      const i = listeners.indexOf(listener);
       if (i > -1) {
-        listeners = listeners.splice(i, 1);
+        listeners.splice(i, 1);
         if (!listeners.length) {
-            delete(this._eventMap[event]);
+          delete (this._eventMap[event]);
         }
       }
     }
@@ -64,10 +61,10 @@ export default class EventDispatcher {
   }
 
   removeAllListener(event) {
-    var listeners = this.getListener(event);
+    const listeners = this.getListener(event);
     if (listeners) {
       this._eventMap[event].length = 0;
-      delete(this._eventMap[event]);
+      delete (this._eventMap[event]);
     }
     return this;
   }
@@ -81,34 +78,36 @@ export default class EventDispatcher {
   }
 
   dispatch(eventType, eventObject) {
-    var listeners = this.getListener(eventType);
+    const listeners = this.getListener(eventType);
 
     if (listeners) {
-      eventObject = eventObject || {};
-      eventObject.type = eventType;
-      eventObject.target = eventObject.target || this._target;
-      eventObject.currentTarget = eventObject.currentTarget || this._currentTarget;
+      const evtObj = eventObject || {};
+      evtObj.type = eventType;
+      evtObj.target = evtObj.target || this._target;
+      evtObj.currentTarget = evtObj.currentTarget || this._currentTarget;
 
-      var i = -1;
+      let i = -1;
       while (++i < listeners.length) {
-        listeners[i](eventObject);
+        listeners[i](evtObj);
       }
     }
     return this;
   }
 
   getListener(event) {
-    var result = this._eventMap ? this._eventMap[event] : null;
+    const result = this._eventMap ? this._eventMap[event] : null;
     return (result || null);
   }
 
   destroy() {
     if (this._eventMap) {
-      for (var i in this._eventMap) {
-        this.removeAllListener(i);
+      const keys = Object.keys(this._eventMap);
+      for (let i = 0; i < keys.length; i++) {
+        this.removeAllListener(keys[i]);
       }
-      this._eventMap = null;
     }
+
+    this._eventMap = null;
     this._destroyed = true;
     return this;
   }

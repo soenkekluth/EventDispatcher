@@ -1,6 +1,6 @@
 {
   "name": "eventdispatcher",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "EventDispatcher like nodes EventEmitter",
   "scripts": {
     "test": "node test",
@@ -9,7 +9,7 @@
     "dist-js-min": "uglifyjs -cmv dist/eventdispatcher.browser.js > dist/eventdispatcher.browser.min.js",
     "dist": "npm run dist-js && npm run dist-js-min && npm run build-lib",
     "start": "run-p watch-js server",
-    "build-lib": "BABEL_ENV=production babel src -d dist",
+    "build-lib": "babel src -d dist",
     "watch-js": "watchify -d --poll=100 --fast --standalone EventDispatcher -e src/eventdispatcher.js -t babelify -o 'exorcist dist/eventdispatcher.browser.js.map > dist/eventdispatcher.browser.js' -v",
     "server": "browser-sync start --no-ghost-mode --server --directory --files 'examples/**/**, dist/*.js' --startPath examples/index.html"
   },
@@ -34,6 +34,7 @@
     "url": "https://github.com/soenkekluth/EventDispatcher/issues"
   },
   "homepage": "https://github.com/soenkekluth/EventDispatcher",
+  "browserify": { "transform": [ "babelify" ] },
   "devDependencies": {
     "babel-cli": "6.14.0",
     "babel-core": "6.14.0",

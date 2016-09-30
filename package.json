@@ -1,9 +1,7 @@
 {
   "name": "eventdispatcher",
-  "version": "1.6.0",
+  "version": "2.0.0",
   "description": "EventDispatcher like nodes EventEmitter",
-  "main": "dist/eventdispatcher.js",
-  "jsnext:main": "src/eventdispatcher.js",
   "scripts": {
     "test": "node test",
     "build-js": "browserify --fast -e src/eventdispatcher.js -d --standalone EventDispatcher -t babelify | derequire | exorcist dist/eventdispatcher.browser.js.map > dist/eventdispatcher.browser.js",
@@ -23,7 +21,9 @@
     "trigger",
     "dispatch",
     "event",
+    "EventEmitter",
     "dispatcher",
+    "eventdispatcher",
     "emit",
     "emitter",
     "observer"

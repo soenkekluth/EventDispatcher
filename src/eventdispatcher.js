@@ -9,7 +9,7 @@ function isEmpty(obj) {
   return true;
 }
 
-export default class EventDispatcher {
+class EventDispatcher {
 
   constructor({target, currentTarget } = {}) {
 
@@ -113,3 +113,5 @@ export default class EventDispatcher {
     return this;
   }
 }
+
+module.exports = EventDispatcher;

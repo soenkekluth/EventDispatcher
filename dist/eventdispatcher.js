@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -15,10 +15,9 @@ function isEmpty(obj) {
 
 var EventDispatcher = function () {
   function EventDispatcher() {
-    var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-    var target = _ref.target;
-    var currentTarget = _ref.currentTarget;
+    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+        target = _ref.target,
+        currentTarget = _ref.currentTarget;
 
     _classCallCheck(this, EventDispatcher);
 
@@ -127,4 +126,4 @@ var EventDispatcher = function () {
 }();
 
 exports.default = EventDispatcher;
-module.exports = exports['default'];
+module.exports = exports["default"];

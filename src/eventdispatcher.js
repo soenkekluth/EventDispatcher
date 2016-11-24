@@ -1,5 +1,4 @@
 function isEmpty(obj) {
-  console.log('isEmpty', obj);
   if (obj) {
     return Object.keys(obj).length === 0;
   }
@@ -8,13 +7,11 @@ function isEmpty(obj) {
 
 export default class EventDispatcher {
 
-
   constructor({ target, currentTarget } = {}) {
     this.target = target || this;
     this.currentTarget = currentTarget || this;
     this.eventMap = {};
     this.destroyed = false;
-
 
     this.on = this.bind = this.addEventListener = this.addListener;
     this.off = this.unbind = this.removeEventListener = this.removeListener;
@@ -51,7 +48,7 @@ export default class EventDispatcher {
       if (i > -1) {
         listeners.splice(i, 1);
         if (!listeners.length) {
-          delete (this.eventMap[event]);
+          delete this.eventMap[event];
         }
       }
     }
@@ -62,7 +59,7 @@ export default class EventDispatcher {
     const listeners = this.getListener(event);
     if (listeners) {
       this.eventMap[event].length = 0;
-      delete (this.eventMap[event]);
+      delete this.eventMap[event];
     }
     return this;
   }

@@ -1,6 +1,6 @@
 {
   "name": "eventdispatcher",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "EventDispatcher like nodes EventEmitter",
   "main": "lib/eventdispatcher.js",
   "scripts": {

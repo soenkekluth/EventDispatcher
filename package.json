@@ -1,8 +1,8 @@
 {
   "name": "eventdispatcher",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "EventDispatcher like nodes EventEmitter",
-  "main": "dist/eventdispatcher.js",
+  "main": "lib/eventdispatcher.js",
   "scripts": {
     "test": "cross-env NODE_ENV=development babel-node test/index.js",
     "lint": "eslint src",

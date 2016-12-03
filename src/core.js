@@ -1,7 +1,8 @@
-export default class EventDispatcher {
+export default class CoreDispatcher {
 
   constructor() {
     this.eventMap = {};
+    this.destroyed = false;
   }
 
   on(eventName, handler) {
@@ -23,11 +24,16 @@ export default class EventDispatcher {
 
   off(eventName, handler) {
     const listeners = this.getListener(eventName);
-    const i = listeners.indexOf(handler);
-    if (i > -1) {
-      listeners.splice(i, 1);
-      if (!listeners.length) {
-        delete this.eventMap[eventName];
+    if (!handler) {
+      this.eventMap[eventName].length = 0;
+      delete this.eventMap[eventName];
+    } else {
+      const i = listeners.indexOf(handler);
+      if (i > -1) {
+        listeners.splice(i, 1);
+        if (!listeners.length) {
+          delete this.eventMap[eventName];
+        }
       }
     }
     return this;
@@ -35,8 +41,7 @@ export default class EventDispatcher {
 
   trigger(eventType, eventObject = {}) {
     const listeners = this.getListener(eventType);
-
-    if (listeners) {
+    if (listeners.length) {
       eventObject.type = eventType;
       eventObject.target = eventObject.target || this;
 

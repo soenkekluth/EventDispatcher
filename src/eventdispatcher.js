@@ -1,109 +1,30 @@
-function isEmpty(obj) {
-  if (obj) {
-    return Object.keys(obj).length === 0;
-  }
-  return true;
-}
+import CoreDispatcher from './core';
 
-export default class EventDispatcher {
+export default class EventDispatcher extends CoreDispatcher {
 
   constructor({ target, currentTarget } = {}) {
+    super();
     this.target = target || this;
     this.currentTarget = currentTarget || this;
-    this.eventMap = {};
-    this.destroyed = false;
 
-    this.on = this.bind = this.addEventListener = this.addListener;
-    this.off = this.unbind = this.removeEventListener = this.removeListener;
-    this.once = this.one = this.addListenerOnce;
-    this.emit = this.trigger = this.dispatchEvent = this.dispatch;
+    this.addListener = this.bind = this.addEventListener = this.on;
+    this.removeListener = this.unbind = this.removeEventListener = this.off;
+    this.addListenerOnce = this.one = this.once;
+    this.emit = this.dispatch = this.dispatchEvent = this.trigger;
+
+    this.hasListener = this.hasListeners = this.listens;
   }
 
-  addListener(event, listener) {
-    const listeners = this.getListener(event);
-    if (!listeners) {
-      this.eventMap[event] = [listener];
-    } else if (listeners.indexOf(listener) === -1) {
-      listeners.push(listener);
+  listens(eventName) {
+    if (eventName) {
+      return this.getListener(eventName).length > 0;
     }
-    return this;
+    return (!!this.eventMap && Object.keys(this.eventMap).length > 0);
   }
 
-  addListenerOnce(event, listener) {
-    const f2 = (e) => {
-      listener(e);
-      this.off(event, f2);
-    };
-    return this.on(event, f2);
-  }
-
-  removeListener(event, listener) {
-    if (!listener) {
-      return this.removeAllListener(event);
-    }
-
-    const listeners = this.getListener(event);
-    if (listeners) {
-      const i = listeners.indexOf(listener);
-      if (i > -1) {
-        listeners.splice(i, 1);
-        if (!listeners.length) {
-          delete this.eventMap[event];
-        }
-      }
-    }
-    return this;
-  }
-
-  removeAllListener(event) {
-    const listeners = this.getListener(event);
-    if (listeners) {
-      this.eventMap[event].length = 0;
-      delete this.eventMap[event];
-    }
-    return this;
-  }
-
-  hasListener(event) {
-    return this.getListener(event) !== null;
-  }
-
-  hasListeners() {
-    return (this.eventMap !== null && this.eventMap !== undefined && !isEmpty(this.eventMap));
-  }
-
-  dispatch(eventType, eventObject) {
-    const listeners = this.getListener(eventType);
-
-    if (listeners) {
-      const evtObj = eventObject || {};
-      evtObj.type = eventType;
-      evtObj.target = evtObj.target || this.target;
-      evtObj.currentTarget = evtObj.currentTarget || this.currentTarget;
-
-      let i = -1;
-      while (++i < listeners.length) {
-        listeners[i](evtObj);
-      }
-    }
-    return this;
-  }
-
-  getListener(event) {
-    const result = this.eventMap ? this.eventMap[event] : null;
-    return (result || null);
-  }
-
-  destroy() {
-    if (this.eventMap) {
-      const keys = Object.keys(this.eventMap);
-      for (let i = 0; i < keys.length; i++) {
-        this.removeAllListener(keys[i]);
-      }
-    }
-
-    this.eventMap = null;
-    this.destroyed = true;
-    return this;
+  trigger(eventType, eventObject = {}) {
+    eventObject.target = eventObject.target || this.target;
+    eventObject.currentTarget = eventObject.currentTarget || this.currentTarget;
+    return super.trigger(eventType, eventObject);
   }
 }

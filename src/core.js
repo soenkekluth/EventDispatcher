@@ -1,3 +1,5 @@
+import assign from 'object-assign';
+
 export default class CoreDispatcher {
 
   constructor() {
@@ -39,15 +41,30 @@ export default class CoreDispatcher {
     return this;
   }
 
-  trigger(eventType, eventObject = {}) {
-    const listeners = this.getListener(eventType);
-    if (listeners.length) {
-      eventObject.type = eventType;
-      eventObject.target = eventObject.target || this;
-
-      for (let i = 0, l = listeners.length; i < l; i++) {
+  commitEvent(listeners, eventObject) {
+    for (let i = 0, l = listeners.length; i < l; i++) {
+      if (listeners[i]) {
         listeners[i](eventObject);
+      } else if (console) {
+        console.warn('listener undefined', i);
       }
+    }
+    return this;
+  }
+
+  trigger(eventType, eventObject) {
+    const listeners = this.getListener(eventType);
+    if (listeners && listeners.length) {
+      let payload = {
+        type: eventType,
+        target: this,
+      };
+
+      if (eventObject) {
+        payload = assign(payload, eventObject);
+      }
+
+      return this.commitEvent(listeners, payload);
     }
 
     return this;
@@ -64,7 +81,7 @@ export default class CoreDispatcher {
   }
 
   getListener(eventName) {
-    return (this.eventMap && this.eventMap[eventName]) ? this.eventMap[eventName] : [];
+    return (!!this.eventMap && this.eventMap[eventName]) ? this.eventMap[eventName] : [];
   }
 
   destroy() {

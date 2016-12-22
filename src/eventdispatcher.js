@@ -1,4 +1,5 @@
 import CoreDispatcher from './core';
+import assign from 'object-assign';
 
 export default class EventDispatcher extends CoreDispatcher {
 
@@ -22,9 +23,22 @@ export default class EventDispatcher extends CoreDispatcher {
     return (!!this.eventMap && Object.keys(this.eventMap).length > 0);
   }
 
-  trigger(eventType, eventObject = {}) {
-    eventObject.target = eventObject.target || this.target;
-    eventObject.currentTarget = eventObject.currentTarget || this.currentTarget;
-    return super.trigger(eventType, eventObject);
+  trigger(eventType, eventObject) {
+    const listeners = this.getListener(eventType);
+    if (listeners && listeners.length) {
+      let payload = {
+        type: eventType,
+        target: this.target,
+        currentTarget: this.currentTarget,
+      };
+
+      if (eventObject) {
+        payload = assign(payload, eventObject);
+      }
+
+      return this.commitEvent(listeners, payload);
+    }
+
+    return this;
   }
 }

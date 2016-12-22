@@ -1,6 +1,6 @@
 {
   "name": "eventdispatcher",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "description": "EventDispatcher like nodes EventEmitter",
   "main": "eventdispatcher.js",
   "repository": {
@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/soenkekluth/EventDispatcher/issues"
   },
-  "homepage": "https://github.com/soenkekluth/EventDispatcher"
+  "homepage": "https://github.com/soenkekluth/EventDispatcher",
+  "dependencies": {
+    "object-assign": "^4.1.0"
+  }
 }

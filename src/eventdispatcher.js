@@ -23,22 +23,18 @@ export default class EventDispatcher extends CoreDispatcher {
     return (!!this.eventMap && Object.keys(this.eventMap).length > 0);
   }
 
-  trigger(eventType, eventObject) {
-    const listeners = this.getListener(eventType);
-    if (listeners && listeners.length) {
-      let payload = {
-        type: eventType,
-        target: this.target,
-        currentTarget: this.currentTarget,
-      };
 
-      if (eventObject) {
-        payload = assign(payload, eventObject);
-      }
+  createEventObject(eventType, eventObject) {
+    let evtObj = {
+      type: eventType,
+      target: this.target,
+      currentTarget: this.currentTarget,
+    };
 
-      return this.commitEvent(listeners, payload);
+    if (eventObject) {
+      evtObj = assign(evtObj, eventObject);
     }
 
-    return this;
+    return evtObj;
   }
 }

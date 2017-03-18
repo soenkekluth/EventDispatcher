@@ -52,21 +52,52 @@ export default class CoreDispatcher {
     return this;
   }
 
+  commitEvents(listeners, eventObjects) {
+    for (let i = 0, l = listeners.length; i < l; i++) {
+      if (listeners[i]) {
+        for (let ii = 0, ll = eventObjects.length; ii < ll; ii++) {
+          listeners[i](eventObjects[ii]);
+        }
+      } else if (console) {
+        console.warn('listener undefined', i);
+      }
+    }
+    return this;
+  }
+
+  createEventObject(eventType, eventObject) {
+    let evtObj = {
+      type: eventType,
+      target: this,
+    };
+
+    if (eventObject) {
+      evtObj = assign(evtObj, eventObject);
+    }
+
+    return evtObj;
+  }
+
+
+  triggerSync(eventObjects) {
+    const listenerCollection = [];
+    for (let i = 0, l = eventObjects.length; i < l; i++) {
+      const listeners = this.getListener(eventObjects[i].type);
+      for (let ii = 0, ll = listeners.length; ii < ll; ii++) {
+        const listener = listeners[ii];
+        if(listenerCollection.indexOf(listener) < 0){
+          listenerCollection.push(listener);
+        }
+      }
+
+    }
+  }
+
   trigger(eventType, eventObject) {
     const listeners = this.getListener(eventType);
     if (listeners && listeners.length) {
-      let payload = {
-        type: eventType,
-        target: this,
-      };
-
-      if (eventObject) {
-        payload = assign(payload, eventObject);
-      }
-
-      return this.commitEvent(listeners, payload);
+      return this.commitEvent(listeners, this.createEventObject(eventType, eventObject));
     }
-
     return this;
   }
 

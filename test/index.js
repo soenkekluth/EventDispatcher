@@ -1,5 +1,5 @@
-// import EventDispatcher from '../src/eventdispatcher';
-const EventDispatcher = require('../lib/eventdispatcher');
+import EventDispatcher from '../lib/eventdispatcher';
+// const EventDispatcher = require('../lib');
 
 const handler = function(event) {
   console.log(' >> ' + event.type + ' was triggered');

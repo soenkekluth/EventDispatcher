@@ -1,41 +1,20 @@
-'use strict';
-
-exports.__esModule = true;
-exports.default = undefined;
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
-
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-var _inherits2 = require('babel-runtime/helpers/inherits');
-
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _core = require('./core');
-
-var _core2 = _interopRequireDefault(_core);
-
-var _objectAssign = require('object-assign');
-
-var _objectAssign2 = _interopRequireDefault(_objectAssign);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
+import _inherits from 'babel-runtime/helpers/inherits';
+import CoreDispatcher from './core';
+import assign from 'object-assign';
 
 var EventDispatcher = function (_CoreDispatcher) {
-  (0, _inherits3.default)(EventDispatcher, _CoreDispatcher);
+  _inherits(EventDispatcher, _CoreDispatcher);
 
   function EventDispatcher() {
     var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
         target = _ref.target,
         currentTarget = _ref.currentTarget;
 
-    (0, _classCallCheck3.default)(this, EventDispatcher);
+    _classCallCheck(this, EventDispatcher);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, _CoreDispatcher.call(this));
+    var _this = _possibleConstructorReturn(this, _CoreDispatcher.call(this));
 
     _this.target = target || _this;
     _this.currentTarget = currentTarget || _this;
@@ -64,13 +43,13 @@ var EventDispatcher = function (_CoreDispatcher) {
     };
 
     if (eventObject) {
-      evtObj = (0, _objectAssign2.default)(evtObj, eventObject);
+      evtObj = assign(evtObj, eventObject);
     }
 
     return evtObj;
   };
 
   return EventDispatcher;
-}(_core2.default);
+}(CoreDispatcher);
 
-exports.default = EventDispatcher;
+export { EventDispatcher as default };

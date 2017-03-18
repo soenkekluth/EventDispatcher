@@ -1,21 +1,9 @@
-'use strict';
-
-exports.__esModule = true;
-exports.default = undefined;
-
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _objectAssign = require('object-assign');
-
-var _objectAssign2 = _interopRequireDefault(_objectAssign);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
+import assign from 'object-assign';
 
 var CoreDispatcher = function () {
   function CoreDispatcher() {
-    (0, _classCallCheck3.default)(this, CoreDispatcher);
+    _classCallCheck(this, CoreDispatcher);
 
     this.eventMap = {};
     this.destroyed = false;
@@ -88,7 +76,7 @@ var CoreDispatcher = function () {
     };
 
     if (eventObject) {
-      evtObj = (0, _objectAssign2.default)(evtObj, eventObject);
+      evtObj = assign(evtObj, eventObject);
     }
 
     return evtObj;
@@ -139,4 +127,4 @@ var CoreDispatcher = function () {
   return CoreDispatcher;
 }();
 
-exports.default = CoreDispatcher;
+export { CoreDispatcher as default };

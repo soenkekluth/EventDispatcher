@@ -1,17 +1,8 @@
-"use strict";
-
-exports.__esModule = true;
-exports.default = undefined;
-
-var _classCallCheck2 = require("babel-runtime/helpers/classCallCheck");
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+import _classCallCheck from "babel-runtime/helpers/classCallCheck";
 
 var EventDispatcher = function () {
   function EventDispatcher() {
-    (0, _classCallCheck3.default)(this, EventDispatcher);
+    _classCallCheck(this, EventDispatcher);
 
     this.eventMap = {};
   }
@@ -106,4 +97,4 @@ var EventDispatcher = function () {
   return EventDispatcher;
 }();
 
-exports.default = EventDispatcher;
+export { EventDispatcher as default };
